@@ -23,7 +23,7 @@ const InputSubmit = styled.input`
   }
 `;
 
-const Formulario = () => {
+const Formulario = ({ setMonedas }) => {
   //Variables de estado
   const [cryptos, setCryptos] = useState([]);
   const [error, setError] = useState(false);
@@ -38,7 +38,6 @@ const Formulario = () => {
 
       const respuesta = await fetch(url);
       const resultado = await respuesta.json();
-      console.log(resultado.Data);
 
       const arrayCryptos = resultado.Data.map((crypto) => {
         const objeto = {
@@ -48,7 +47,6 @@ const Formulario = () => {
         return objeto;
       });
       setCryptos(arrayCryptos);
-      console.log(arrayCryptos);
     };
     consultarAPI();
   }, []);
@@ -61,6 +59,10 @@ const Formulario = () => {
     }
 
     setError(false);
+    setMonedas({
+      moneda,
+      cryptoMoneda,
+    });
   };
 
   return (
