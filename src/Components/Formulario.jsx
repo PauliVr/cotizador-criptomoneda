@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import useSelectMonedas from '../hooks/useSelectMonedas';
 import { monedas } from '../data/monedas';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const InputSubmit = styled.input`
   background-color: #9497ff;
@@ -23,8 +23,8 @@ const InputSubmit = styled.input`
 `;
 
 const Formulario = () => {
+  const [cryptos, setCryptos] = useState([]);
   const [moneda, SelectMonedas] = useSelectMonedas('Elige tu moneda', monedas);
-  // const [SelectCriptoMonedas] = useSelectMonedas('Elige tu Criptomoneda');
 
   useEffect(() => {
     const consultarAPI = async () => {
@@ -33,6 +33,16 @@ const Formulario = () => {
       const respuesta = await fetch(url);
       const resultado = await respuesta.json();
       console.log(resultado.Data);
+
+      const arrayCryptos = resultado.Data.map((crypto) => {
+        const objeto = {
+          id: crypto.CoinInfo.Name,
+          nombre: crypto.CoinInfo.FullName,
+        };
+        return objeto;
+      });
+      setCryptos(arrayCryptos);
+      console.log(arrayCryptos);
     };
     consultarAPI();
   }, []);
